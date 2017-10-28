@@ -5,6 +5,11 @@
  */
 package rest;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import facades.UserFacade;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Path;
@@ -20,23 +25,31 @@ import javax.ws.rs.core.MediaType;
 @Path("demoall")
 public class All {
 
-  @Context
-  private UriInfo context;
+    private UserFacade uf;
+    private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-  /**
-   * Creates a new instance of A
-   */
-  public All() {
-  }
+    @Context
+    private UriInfo context;
 
-  /**
-   * Retrieves representation of an instance of rest.All
-   * @return an instance of java.lang.String
-   */
-  @GET
-  @Produces(MediaType.APPLICATION_JSON)
-  public String getText() {
-    return " {\"message\" : \"result for all\"}";
-  }
+    /**
+     * Creates a new instance of A
+     */
+    public All()
+    {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("pu_development");
+        uf = new UserFacade(emf);
+    }
+
+    /**
+     * Retrieves representation of an instance of rest.All
+     *
+     * @return an instance of java.lang.String
+     */
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getText()
+    {
+        return " {\"message\" : \"result for all\"}";
+    }
 
 }
